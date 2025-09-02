@@ -23,7 +23,7 @@ export default function CookiePolicy() {
             Cookies are small text files that are placed on your computer or
             mobile device when you visit our website. These files enable our
             website to remember your actions and preferences over a period of
-            time. Cookies help us analyze web traffic and understand which areas
+            time. Cokies help us analyze web traffic and understand which areas
             of our services are being used, allowing us to improve performance
             and user experience across our platform. First-party cookies are set
             directly by our website and help us provide core functionality such
