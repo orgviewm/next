@@ -1,0 +1,157 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+    --brand-default: 153.1deg 60.2% 52.7%;
+    --background: 0, 0%, 11%; /*new */
+    --foreground: 0 0% 95%;
+    --foreground-light: 0, 0%, 63%;
+    --card: 0, 0%, 14%; /*new */
+    --card-foreground: 0, 0%, 93%; /*new */
+    --popover: 0 0% 9%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 151 47.1% 40.8%; /*new */
+    --primary-default: 153 60.2% 52.7%;
+    --primary-foreground: 0, 0%, 93%; /*new */
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0, 0%, 49%; /*new */
+    --accent: 153, 60%, 53%, 0.1;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 85.7% 97.3%;
+    --border: 0 0% 20.4%; /*new */
+    --input: 240 3.7% 15.9%;
+    --ring: 142.4 71.8% 29.2%;
+    --brand-default: 153.1deg 60.2% 52.7%;
+    --brand-600: 153deg 59.5% 70%;
+    --brand-500: 153.5deg 61.8% 21.6%;
+    --brand-400: 153.3deg 65.2% 13.5%;
+    --brand-300: 153.8deg 69.6% 9%;
+    --brand-200: 152.5deg 75% 6.3%;
+    --primary-gradient: linear-gradient(
+      to right,
+      hsl(var(--primary)),
+      hsl(#3ecfb2)
+    );
+  }
+}
+@font-face {
+  font-family: "circular";
+  src: url("/font/circular.ttf");
+  font-weight: 400;
+  font-style: normal;
+}
+body {
+  color: hsl(var(--card-foreground));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+  font-family: "circular";
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+.pause {
+  animation-play-state: paused;
+}
+
+.run {
+  animation-play-state: running;
+}
+
+/* .break-inside-avoid-column {
+  break-inside: avoid-column;
+} */
+
+/* Hide TradingView watermarks and branding - Targeted approach */
+.chart-container [class*="watermark"],
+.chart-container [class*="attribution"],
+.chart-container [class*="logo"],
+.chart-container [class*="brand"],
+.chart-wrapper [class*="watermark"],
+.chart-wrapper [class*="attribution"],
+.chart-wrapper [class*="logo"],
+.chart-wrapper [class*="brand"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+}
+
+/* TradingView branding removal handled by chart configuration */
+
+/* Ensure chart takes full space */
+.chart-container,
+.chart-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hide any elements with TradingView-related content in attributes */
+*[title*="TradingView"],
+*[alt*="TradingView"],
+*[aria-label*="TradingView"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+/* Resizable panel styles */
+.panel-maximized {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}
+
+.panel-maximized .chart-container,
+.panel-maximized .chart-wrapper {
+  pointer-events: none;
+  user-select: none;
+}
+
+.panel-drag-handle {
+  touch-action: none;
+  user-select: none;
+}
+
+.panel-drag-handle:focus {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+.panel-content {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--border)) transparent;
+}
+
+.panel-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.panel-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.panel-content::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 3px;
+}
+
+.panel-content::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground));
+}
