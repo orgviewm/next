@@ -277,7 +277,9 @@ const TitleBar = () => {
                   </MenubarContent>
                 </MenubarMenu>
                 <MenubarMenu>
-                  <MenubarTrigger>Pricing</MenubarTrigger>
+                  <MenubarTrigger asChild>
+                    <a href="/pricing">Pricing</a>
+                  </MenubarTrigger>
                 </MenubarMenu>
                 <MenubarMenu>
                   <MenubarTrigger>Docs</MenubarTrigger>
