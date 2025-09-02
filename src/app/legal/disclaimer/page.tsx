@@ -35,7 +35,7 @@ export default function Disclaimer() {
             availability when used within our platform. Data visualization
             accuracy depends on input data quality and user interpretation, with
             no guarantee of completeness or correctness in generated charts,
-            graphs, or analytical outputs. Security measures provide reasonable
+            graphs, or analytical outpts. Security measures provide reasonable
             protection but cannot guarantee absolute prevention of unauthorized
             access, data breaches, or cyber incidents in an evolving threat
             landscape. Performance optimization applies industry best practices
