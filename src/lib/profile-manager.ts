@@ -19,9 +19,9 @@ export async function upsertProfile(data: ProfileData) {
     .from("profiles")
     .select("*")
     .or(
-      `email.ilike.${email},and(provider.eq.${provider},provider_account_id.eq.${provider_account_id})`,
+      `email.eq.${email},and(provider.eq.${provider},provider_account_id.eq.${provider_account_id})`,
     )
-    .single();
+    .maybeSingle();
 
   if (existingProfile) {
     // Update existing profile
