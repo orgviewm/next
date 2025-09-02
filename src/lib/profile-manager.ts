@@ -1,4 +1,4 @@
-import { supabaseAdmin } from "./supabase-admin";
+import { getSupabaseAdmin } from "./supabase-admin";
 
 export const runtime = "nodejs";
 
@@ -11,6 +11,7 @@ interface ProfileData {
 }
 
 export async function upsertProfile(data: ProfileData) {
+  const supabaseAdmin = getSupabaseAdmin();
   const { email, name, image, provider, provider_account_id } = data;
 
   // First, try to find existing profile by email or provider combination
