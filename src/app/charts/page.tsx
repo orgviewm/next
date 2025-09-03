@@ -151,14 +151,9 @@ const ChartsPage = () => {
     const saved = localStorage.getItem("charts-panel-state");
     if (saved) {
       try {
-        const { height, page, lastHeight } = JSON.parse(saved);
-        const initialHeight = Math.max(0, height || 0); // Ensure non-negative
-
-        // Only apply saved height if it's greater than 0 and valid
-        if (initialHeight > 0) {
-          setPanelHeight(initialHeight);
-          panelHeightRef.current = initialHeight;
-        }
+        const { page, lastHeight } = JSON.parse(saved);
+        // Don't restore height on page load - keep panel closed
+        // Only restore the active page and last height for future use
 
         if (page && PANEL_PAGES[page as PanelPage]) {
           setActivePage(page as PanelPage);
