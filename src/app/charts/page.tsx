@@ -26,6 +26,7 @@ import { BsTools } from "react-icons/bs";
 import { PiChats } from "react-icons/pi";
 
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -37,7 +38,7 @@ import TradingViewChart from "@/components/TradingViewChart";
 
 // Panel pages configuration
 const PANEL_PAGES = {
-  broker: "Broker",
+  broker: "Broker(MCP)",
   codeEditor: "Code Editor",
   strategyTester: "Strategy Tester",
   replayTrading: "Replay Trading",
@@ -72,6 +73,9 @@ const ChartsPage = () => {
     useState("Technical");
   const [isIndicatorPopupOpen, setIsIndicatorPopupOpen] = useState(false);
   const [isSettingsPopupOpen, setIsSettingsPopupOpen] = useState(false);
+
+  // Search state for brokers
+  const [brokerSearchQuery, setBrokerSearchQuery] = useState("");
 
   // Refs for performance
   const containerRef = useRef<HTMLDivElement>(null);
@@ -454,35 +458,114 @@ const ChartsPage = () => {
 
     switch (activePage) {
       case "broker":
+        const allBrokers = [
+          { name: "MetaTrader 4", status: "Available", color: "bg-blue-500" },
+          { name: "MetaTrader 5", status: "Available", color: "bg-green-500" },
+          {
+            name: "Interactive Brokers",
+            status: "Available",
+            color: "bg-orange-500",
+          },
+          { name: "TD Ameritrade", status: "Available", color: "bg-red-500" },
+          { name: "E*TRADE", status: "Available", color: "bg-purple-500" },
+          {
+            name: "Charles Schwab",
+            status: "Available",
+            color: "bg-indigo-500",
+          },
+          { name: "Fidelity", status: "Available", color: "bg-teal-500" },
+          { name: "Robinhood", status: "Available", color: "bg-pink-500" },
+          { name: "Webull", status: "Available", color: "bg-yellow-500" },
+          { name: "Thinkorswim", status: "Available", color: "bg-cyan-500" },
+          { name: "TradingView", status: "Available", color: "bg-gray-500" },
+          { name: "Binance", status: "Available", color: "bg-amber-500" },
+          {
+            name: "Coinbase Pro",
+            status: "Available",
+            color: "bg-emerald-500",
+          },
+          { name: "Kraken", status: "Available", color: "bg-violet-500" },
+          { name: "OANDA", status: "Available", color: "bg-rose-500" },
+          { name: "IG Markets", status: "Available", color: "bg-slate-500" },
+          { name: "CMC Markets", status: "Available", color: "bg-stone-500" },
+          { name: "Pepperstone", status: "Available", color: "bg-neutral-500" },
+          { name: "IC Markets", status: "Available", color: "bg-lime-500" },
+          { name: "FXTM", status: "Available", color: "bg-sky-500" },
+          { name: "XM", status: "Available", color: "bg-fuchsia-500" },
+          { name: "Exness", status: "Available", color: "bg-emerald-600" },
+          { name: "Deriv", status: "Available", color: "bg-orange-600" },
+          { name: "Plus500", status: "Available", color: "bg-purple-600" },
+          { name: "eToro", status: "Available", color: "bg-blue-600" },
+          { name: "AvaTrade", status: "Available", color: "bg-green-600" },
+          { name: "Forex.com", status: "Available", color: "bg-red-600" },
+          {
+            name: "Admiral Markets",
+            status: "Available",
+            color: "bg-indigo-600",
+          },
+        ];
+
+        const filteredBrokers = allBrokers.filter((broker) =>
+          broker.name.toLowerCase().includes(brokerSearchQuery.toLowerCase()),
+        );
+
         return (
           <div className={commonClasses}>
-            <h2 className="mb-4 text-lg font-semibold">Broker</h2>
-            <p className="mb-4 text-muted-foreground">
-              Connect and manage your broker accounts.
-            </p>
-            <div className="space-y-4">
-              <div className="rounded-lg border border-border p-3">
-                <h3 className="mb-2 font-medium">Account Status</h3>
-                <p className="text-sm text-muted-foreground">
-                  No broker connected
-                </p>
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="select-none text-lg font-semibold">
+                Connect through our trusted brokers.
+              </h2>
+              <div className="relative w-64">
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-muted-foreground" />
+                <Input
+                  type="text"
+                  placeholder="Search brokers..."
+                  value={brokerSearchQuery}
+                  onChange={(e) => setBrokerSearchQuery(e.target.value)}
+                  className="select-none pl-10"
+                />
               </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+              {filteredBrokers.map((broker, index) => (
+                <div
+                  key={index}
+                  className="flex aspect-square select-none flex-col items-center justify-center rounded-lg border border-border p-4 text-center transition-all duration-200 hover:scale-105 hover:shadow-lg"
+                >
+                  <div
+                    className={`h-12 w-12 ${broker.color} mb-3 flex select-none items-center justify-center rounded-lg text-lg font-bold text-white shadow-md`}
+                  >
+                    {broker.name.charAt(0)}
+                  </div>
+                  <h3 className="mb-1 select-none text-sm font-semibold leading-tight">
+                    {broker.name}
+                  </h3>
+                  <p className="mb-3 select-none text-xs text-muted-foreground">
+                    {broker.status}
+                  </p>
+                  <button className="w-full select-none rounded-md border border-gray-300 bg-white px-3 py-2 text-xs font-medium text-black transition-colors hover:bg-gray-100">
+                    Connect
+                  </button>
+                </div>
+              ))}
             </div>
           </div>
         );
       case "codeEditor":
         return (
           <div className={commonClasses}>
-            <h2 className="mb-4 text-lg font-semibold">Code Editor</h2>
-            <p className="mb-4 text-muted-foreground">
+            <h2 className="mb-4 select-none text-lg font-semibold">
+              Code Editor
+            </h2>
+            <p className="mb-4 select-none text-muted-foreground">
               Write and edit your trading strategies.
             </p>
-            <div className="rounded-lg bg-muted/20 p-4 font-mono text-sm">
-              <div className="text-green-400">
+            <div className="select-none rounded-lg bg-muted/20 p-4 font-mono text-sm">
+              <div className="select-none text-green-400">
                 {"// Your trading strategy code here"}
               </div>
-              <div className="text-blue-400">function</div>{" "}
-              <div className="text-yellow-400">onTick</div>() {"{"}
+              <div className="select-none text-blue-400">function</div>{" "}
+              <div className="select-none text-yellow-400">onTick</div>() {"{"}
               {"}"}
             </div>
           </div>
@@ -490,18 +573,24 @@ const ChartsPage = () => {
       case "strategyTester":
         return (
           <div className={commonClasses}>
-            <h2 className="mb-4 text-lg font-semibold">Strategy Tester</h2>
-            <p className="mb-4 text-muted-foreground">
+            <h2 className="mb-4 select-none text-lg font-semibold">
+              Strategy Tester
+            </h2>
+            <p className="mb-4 select-none text-muted-foreground">
               Backtest your trading strategies.
             </p>
             <div className="grid grid-cols-2 gap-4">
-              <div className="rounded-lg border border-border p-3">
-                <h3 className="mb-2 font-medium">Total Return</h3>
-                <p className="text-2xl font-bold text-green-400">+12.5%</p>
+              <div className="select-none rounded-lg border border-border p-3">
+                <h3 className="mb-2 select-none font-medium">Total Return</h3>
+                <p className="select-none text-2xl font-bold text-green-400">
+                  +12.5%
+                </p>
               </div>
-              <div className="rounded-lg border border-border p-3">
-                <h3 className="mb-2 font-medium">Max Drawdown</h3>
-                <p className="text-2xl font-bold text-red-400">-3.2%</p>
+              <div className="select-none rounded-lg border border-border p-3">
+                <h3 className="mb-2 select-none font-medium">Max Drawdown</h3>
+                <p className="select-none text-2xl font-bold text-red-400">
+                  -3.2%
+                </p>
               </div>
             </div>
           </div>
@@ -509,20 +598,24 @@ const ChartsPage = () => {
       case "replayTrading":
         return (
           <div className={commonClasses}>
-            <h2 className="mb-4 text-lg font-semibold">Replay Trading</h2>
-            <p className="mb-4 text-muted-foreground">
+            <h2 className="mb-4 select-none text-lg font-semibold">
+              Replay Trading
+            </h2>
+            <p className="mb-4 select-none text-muted-foreground">
               Practice trading with historical data.
             </p>
             <div className="mb-4 flex items-center gap-4">
-              <Button size="sm">Play</Button>
-              <Button size="sm" variant="outline">
+              <Button size="sm" className="select-none">
+                Play
+              </Button>
+              <Button size="sm" variant="outline" className="select-none">
                 Pause
               </Button>
-              <Button size="sm" variant="outline">
+              <Button size="sm" variant="outline" className="select-none">
                 Reset
               </Button>
             </div>
-            <div className="text-sm text-muted-foreground">
+            <div className="select-none text-sm text-muted-foreground">
               Speed: 1x | Date: 2024-01-15 | Balance: $10,000
             </div>
           </div>
@@ -530,36 +623,40 @@ const ChartsPage = () => {
       case "tradingPanel":
         return (
           <div className={commonClasses}>
-            <h2 className="mb-4 text-lg font-semibold">Trading Panel</h2>
-            <p className="mb-4 text-muted-foreground">
+            <h2 className="mb-4 select-none text-lg font-semibold">
+              Trading Panel
+            </h2>
+            <p className="mb-4 select-none text-muted-foreground">
               Execute trades and manage positions.
             </p>
             <div className="grid grid-cols-2 gap-4">
-              <Button className="h-12" variant="default">
+              <Button className="h-12 select-none" variant="default">
                 Buy
               </Button>
-              <Button className="h-12" variant="destructive">
+              <Button className="h-12 select-none" variant="destructive">
                 Sell
               </Button>
             </div>
-            <div className="mt-4 rounded-lg border border-border p-3">
-              <h3 className="mb-2 font-medium">Position Size</h3>
+            <div className="mt-4 select-none rounded-lg border border-border p-3">
+              <h3 className="mb-2 select-none font-medium">Position Size</h3>
               <input
                 type="number"
-                className="w-full rounded border border-border bg-background p-2"
+                className="w-full select-none rounded border border-border bg-background p-2"
                 placeholder="0.01"
               />
             </div>
           </div>
         );
       default:
-        return <div className={commonClasses}>Select a panel</div>;
+        return (
+          <div className={commonClasses + " select-none"}>Select a panel</div>
+        );
     }
   };
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="h-8 w-full border-b border-border bg-background">
+      <header className="h-8 w-full select-none border-b border-border bg-background">
         <div className="mx-auto h-full w-full px-6">
           <div className="flex h-full w-full items-center justify-between">
             <div className="flex items-center gap-2">
@@ -568,7 +665,7 @@ const ChartsPage = () => {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="-ml-2 h-6 w-6 p-0 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+                    className="-ml-2 h-6 w-6 select-none p-0 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
                   >
                     <User className="h-4 w-4" />
                   </Button>
@@ -617,24 +714,26 @@ const ChartsPage = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-6 px-2 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+                className="h-6 select-none px-2 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
                 onClick={() => setIsSymbolPopupOpen(true)}
               >
                 <Search className="mr-1 h-4 w-4" />
-                <span className="text-sm">Symbol</span>
+                <span className="select-none text-sm">Symbol</span>
               </Button>
               <div className="relative" ref={timeframeDropdownRef}>
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-6 px-2 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+                  className="h-6 select-none px-2 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
                   onClick={(e) => {
                     e.stopPropagation();
                     setIsCandleDropdownOpen(false);
                     setIsTimeframeDropdownOpen(!isTimeframeDropdownOpen);
                   }}
                 >
-                  <span className="text-sm">{selectedTimeframe}</span>
+                  <span className="select-none text-sm">
+                    {selectedTimeframe}
+                  </span>
                 </Button>
                 {isTimeframeDropdownOpen && (
                   <div className="timeframe-dropdown absolute left-0 top-8 z-50 w-48 rounded-md border border-[hsl(0,0%,20.4%)] bg-[hsl(0,0%,11%)] shadow-lg">
@@ -937,7 +1036,7 @@ const ChartsPage = () => {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-6 w-6 p-0 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+                  className="h-6 w-6 select-none p-0 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
                   onClick={(e) => {
                     e.stopPropagation();
                     setIsTimeframeDropdownOpen(false);
@@ -1049,17 +1148,17 @@ const ChartsPage = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-6 px-2 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+                className="h-6 select-none px-2 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
                 onClick={() => setIsIndicatorPopupOpen(true)}
               >
-                <span className="text-sm">Indicator</span>
+                <span className="select-none text-sm">Indicator</span>
               </Button>
             </div>
             <div className="flex items-center gap-2">
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-6 w-6 p-0 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+                className="h-6 w-6 select-none p-0 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
                 onClick={() => setIsSettingsPopupOpen(true)}
               >
                 <IoSettingsOutline className="h-4 w-4" />
@@ -1067,23 +1166,23 @@ const ChartsPage = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-6 w-6 p-0 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+                className="h-6 w-6 select-none p-0 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
               >
                 <GoScreenFull className="h-4 w-4" />
               </Button>
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-6 w-6 p-0 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+                className="h-6 w-6 select-none p-0 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
               >
                 <IoCameraReverseOutline className="h-4 w-4" />
               </Button>
               <Button
                 variant="ghost"
                 size="sm"
-                className="-mr-4 h-6 px-2 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+                className="-mr-4 h-6 select-none px-2 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
               >
-                <span className="text-sm">Publish</span>
+                <span className="select-none text-sm">Publish</span>
               </Button>
             </div>
           </div>
@@ -1150,7 +1249,7 @@ const ChartsPage = () => {
         <div className="h-px bg-border" />
 
         {/* Footer content */}
-        <div className="h-8 w-full border-t border-border bg-background">
+        <div className="h-8 w-full select-none border-t border-border bg-background">
           <div className="flex h-full items-center justify-between px-6">
             <div className="flex items-center gap-2">
               {Object.entries(PANEL_PAGES).map(([key, label]) => (
@@ -1158,13 +1257,13 @@ const ChartsPage = () => {
                   key={key}
                   variant="ghost"
                   size="sm"
-                  className={`h-6 px-2 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 ${
+                  className={`h-6 select-none px-2 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 ${
                     activePage === key ? "bg-accent/20" : ""
                   }`}
                   onClick={() => handlePageClick(key as PanelPage)}
                   aria-pressed={activePage === key}
                 >
-                  <span className="text-sm">{label}</span>
+                  <span className="select-none text-sm">{label}</span>
                 </Button>
               ))}
             </div>
@@ -1173,27 +1272,27 @@ const ChartsPage = () => {
         </div>
       </div>
 
-      <div className="fixed bottom-8 right-0 top-8 w-10 border-l border-border bg-background">
+      <div className="fixed bottom-8 right-0 top-8 w-10 select-none border-l border-border bg-background">
         <div className="flex h-full flex-col items-center gap-2 pt-2">
           <div className="flex flex-col items-center gap-2">
             <Button
               variant="ghost"
               size="sm"
-              className="h-6 w-6 p-0 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+              className="h-6 w-6 select-none p-0 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
             >
               <BsTools className="h-3.5 w-3.5" />
             </Button>
             <Button
               variant="ghost"
               size="sm"
-              className="h-6 w-6 p-0 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+              className="h-6 w-6 select-none p-0 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
             >
               <LuAlarmClockCheck className="h-4 w-4" />
             </Button>
             <Button
               variant="ghost"
               size="sm"
-              className="h-6 w-6 p-0 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+              className="h-6 w-6 select-none p-0 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
             >
               <PiChats className="h-4 w-4" />
             </Button>
@@ -1203,35 +1302,35 @@ const ChartsPage = () => {
             <Button
               variant="ghost"
               size="sm"
-              className="h-6 w-6 p-0 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+              className="h-6 w-6 select-none p-0 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
             >
               <IoCalendarNumberOutline className="h-4 w-4" />
             </Button>
             <Button
               variant="ghost"
               size="sm"
-              className="h-6 w-6 p-0 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+              className="h-6 w-6 select-none p-0 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
             >
               <AiOutlineProduct className="h-4 w-4" />
             </Button>
             <Button
               variant="ghost"
               size="sm"
-              className="h-6 w-6 p-0 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+              className="h-6 w-6 select-none p-0 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
             >
               <CgCommunity className="h-4 w-4" />
             </Button>
             <Button
               variant="ghost"
               size="sm"
-              className="h-6 w-6 p-0 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+              className="h-6 w-6 select-none p-0 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
             >
               <MdOutlineEditNotifications className="h-4 w-4" />
             </Button>
             <Button
               variant="ghost"
               size="sm"
-              className="h-6 w-6 p-0 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+              className="h-6 w-6 select-none p-0 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
             >
               <LuCircleHelp className="h-4 w-4" />
             </Button>
@@ -1246,10 +1345,10 @@ const ChartsPage = () => {
           onClick={() => setIsSymbolPopupOpen(false)}
         >
           <div
-            className="relative h-[80vh] w-[50vw] rounded-lg border border-border bg-background"
+            className="relative h-[80vh] w-[50vw] select-none rounded-lg border border-border bg-background"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="absolute left-4 top-2 text-lg font-semibold">
+            <h2 className="absolute left-4 top-2 select-none text-lg font-semibold">
               Search Symbols
             </h2>
             <input
@@ -1327,10 +1426,10 @@ const ChartsPage = () => {
           onClick={() => setIsIndicatorPopupOpen(false)}
         >
           <div
-            className="relative h-[80vh] w-[50vw] rounded-lg border border-border bg-background"
+            className="relative h-[80vh] w-[50vw] select-none rounded-lg border border-border bg-background"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="absolute left-4 top-2 text-lg font-semibold">
+            <h2 className="absolute left-4 top-2 select-none text-lg font-semibold">
               Indicators
             </h2>
             <input
@@ -1390,10 +1489,10 @@ const ChartsPage = () => {
           onClick={() => setIsSettingsPopupOpen(false)}
         >
           <div
-            className="relative h-[80vh] w-[50vw] rounded-lg border border-border bg-background"
+            className="relative h-[80vh] w-[50vw] select-none rounded-lg border border-border bg-background"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="absolute left-4 top-2 text-lg font-semibold">
+            <h2 className="absolute left-4 top-2 select-none text-lg font-semibold">
               Settings
             </h2>
             <div className="absolute bottom-0 left-0 top-10 w-48 border-r border-border bg-muted/20">
@@ -1488,7 +1587,11 @@ const LiveTimestamp = () => {
     return () => clearInterval(interval);
   }, []);
 
-  return <div className="font-mono text-sm text-muted-foreground">{time}</div>;
+  return (
+    <div className="select-none font-mono text-sm text-muted-foreground">
+      {time}
+    </div>
+  );
 };
 
 export default ChartsPage;
