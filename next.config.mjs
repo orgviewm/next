@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
-  serverExternalPackages: ['@supabase/supabase-js', '@supabase/realtime-js'],
+  serverExternalPackages: ["@supabase/supabase-js", "@supabase/realtime-js"],
   webpack: (config, { dev, isServer, nextRuntime }) => {
     if (dev && !isServer) {
       config.optimization.splitChunks = {
@@ -16,16 +16,16 @@ const nextConfig = {
         },
       };
     }
-    
+
     // Handle Supabase modules for Edge Runtime
-    if (nextRuntime === 'edge') {
+    if (nextRuntime === "edge") {
       config.resolve.alias = {
         ...config.resolve.alias,
-        '@supabase/realtime-js': false,
-        '@supabase/supabase-js': false,
+        "@supabase/realtime-js": false,
+        "@supabase/supabase-js": false,
       };
     }
-    
+
     return config;
   },
   experimental: {

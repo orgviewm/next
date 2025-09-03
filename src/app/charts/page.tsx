@@ -34,7 +34,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import TradingViewChart from "@/components/TradingViewChart";
+import TradingViewChart, { ChartRef } from "@/components/TradingViewChart";
+import CodeEditor from "@/components/CodeEditor";
 
 // Panel pages configuration
 const PANEL_PAGES = {
@@ -55,6 +56,7 @@ const ChartsPage = () => {
   const [activePage, setActivePage] = useState<PanelPage>("broker");
   const [isDragging, setIsDragging] = useState(false);
   const [lastNonMaxHeight, setLastNonMaxHeight] = useState(240);
+  const [isClientReady, setIsClientReady] = useState(false);
   const [isSymbolPopupOpen, setIsSymbolPopupOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("All");
   const [isTimeframeDropdownOpen, setIsTimeframeDropdownOpen] = useState(false);
@@ -84,6 +86,7 @@ const ChartsPage = () => {
   const bottomPanelRef = useRef<HTMLDivElement>(null);
   const timeframeDropdownRef = useRef<HTMLDivElement>(null);
   const candleDropdownRef = useRef<HTMLDivElement>(null);
+  const chartRef = useRef<ChartRef>(null);
 
   // Drag performance refs
   const panelHeightRef = useRef(0);
@@ -108,41 +111,67 @@ const ChartsPage = () => {
     );
   }, []);
 
-  // Debounced save to localStorage
+  // Debounced save to localStorage (client-side only)
   const saveStateTimeoutRef = useRef<NodeJS.Timeout>();
   const saveState = useCallback(
     (height: number, page: PanelPage, lastHeight?: number) => {
+      // Only save if we're on the client and have a valid height
+      if (!isClientReady || typeof window === "undefined") return;
+
       if (saveStateTimeoutRef.current) {
         clearTimeout(saveStateTimeoutRef.current);
       }
       saveStateTimeoutRef.current = setTimeout(() => {
-        localStorage.setItem(
-          "charts-panel-state",
-          JSON.stringify({
-            height,
-            page,
-            lastHeight: lastHeight ?? lastNonMaxHeight,
-          }),
-        );
+        try {
+          localStorage.setItem(
+            "charts-panel-state",
+            JSON.stringify({
+              height: Math.max(0, height), // Ensure non-negative
+              page,
+              lastHeight: lastHeight ?? lastNonMaxHeight,
+            }),
+          );
+        } catch (error) {
+          console.warn("Failed to save panel state to localStorage:", error);
+        }
       }, 300);
     },
-    [lastNonMaxHeight],
+    [lastNonMaxHeight, isClientReady],
   );
 
-  // Load state from localStorage
+  // Set client ready flag after mount
   useEffect(() => {
+    setIsClientReady(true);
+  }, []);
+
+  // Load state from localStorage (client-side only)
+  useEffect(() => {
+    if (!isClientReady) return;
+
     const saved = localStorage.getItem("charts-panel-state");
     if (saved) {
       try {
         const { height, page, lastHeight } = JSON.parse(saved);
-        const initialHeight = height || 0;
-        setPanelHeight(initialHeight);
-        panelHeightRef.current = initialHeight;
-        setActivePage(page || "broker");
-        setLastNonMaxHeight(lastHeight || 240);
-      } catch {}
+        const initialHeight = Math.max(0, height || 0); // Ensure non-negative
+
+        // Only apply saved height if it's greater than 0 and valid
+        if (initialHeight > 0) {
+          setPanelHeight(initialHeight);
+          panelHeightRef.current = initialHeight;
+        }
+
+        if (page && PANEL_PAGES[page as PanelPage]) {
+          setActivePage(page as PanelPage);
+        }
+
+        if (lastHeight && lastHeight > 0) {
+          setLastNonMaxHeight(lastHeight);
+        }
+      } catch (error) {
+        console.warn("Failed to parse saved panel state:", error);
+      }
     }
-  }, []);
+  }, [isClientReady]);
 
   // Click outside handler for dropdowns
   useEffect(() => {
@@ -227,6 +256,20 @@ const ChartsPage = () => {
       }
     };
   }, [panelHeight, activePage, saveState, getMaxHeight]);
+
+  // Trigger chart resize when panel height changes
+  useEffect(() => {
+    if (!isClientReady) return;
+
+    // Use requestAnimationFrame to ensure DOM has updated
+    const resizeChart = () => {
+      if (chartRef.current && typeof chartRef.current.resize === "function") {
+        chartRef.current.resize();
+      }
+    };
+
+    requestAnimationFrame(resizeChart);
+  }, [panelHeight, isClientReady]);
 
   // Open panel with smooth transition
   const openPanel = useCallback(
@@ -554,19 +597,17 @@ const ChartsPage = () => {
       case "codeEditor":
         return (
           <div className={commonClasses}>
-            <h2 className="mb-4 select-none text-lg font-semibold">
-              Code Editor
-            </h2>
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="select-none text-lg font-semibold">Code Editor</h2>
+              <div className="select-none text-xs text-muted-foreground">
+                Ctrl+S to save
+              </div>
+            </div>
             <p className="mb-4 select-none text-muted-foreground">
               Write and edit your trading strategies.
             </p>
-            <div className="select-none rounded-lg bg-muted/20 p-4 font-mono text-sm">
-              <div className="select-none text-green-400">
-                {"// Your trading strategy code here"}
-              </div>
-              <div className="select-none text-blue-400">function</div>{" "}
-              <div className="select-none text-yellow-400">onTick</div>() {"{"}
-              {"}"}
+            <div className="h-full">
+              <CodeEditor height="100%" />
             </div>
           </div>
         );
@@ -1191,13 +1232,13 @@ const ChartsPage = () => {
 
       <div
         ref={containerRef}
-        className="fixed left-0 right-10 bg-background"
+        className="fixed left-0 right-10 overflow-hidden bg-background"
         style={{
           top: `${HEADER_HEIGHT}px`,
           bottom: `${FOOTER_HEIGHT + panelHeight}px`,
         }}
       >
-        <TradingViewChart />
+        <TradingViewChart ref={chartRef} />
       </div>
 
       {/* Bottom Panel - Always at bottom of viewport */}

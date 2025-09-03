@@ -1,8 +1,12 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, forwardRef, useImperativeHandle } from "react";
 
-const TradingViewChart = () => {
+export interface ChartRef {
+  resize: () => void;
+}
+
+const TradingViewChart = forwardRef<ChartRef>((props, ref) => {
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<any>(null);
   const candlestickSeriesRef = useRef<any>(null);
@@ -81,9 +85,12 @@ const TradingViewChart = () => {
 
         const handleResize = () => {
           if (chartContainerRef.current && chartRef.current) {
+            const width = chartContainerRef.current.clientWidth;
+            const height = chartContainerRef.current.clientHeight;
+
             chartRef.current.applyOptions({
-              width: chartContainerRef.current.clientWidth,
-              height: chartContainerRef.current.clientHeight,
+              width: width || 800, // fallback width
+              height: height || 400, // fallback height
             });
           }
         };
@@ -107,11 +114,28 @@ const TradingViewChart = () => {
     };
   }, []);
 
+  // Expose resize method to parent component
+  useImperativeHandle(ref, () => ({
+    resize: () => {
+      if (chartContainerRef.current && chartRef.current) {
+        const width = chartContainerRef.current.clientWidth;
+        const height = chartContainerRef.current.clientHeight;
+
+        chartRef.current.applyOptions({
+          width: width || 800,
+          height: height || 400,
+        });
+      }
+    },
+  }));
+
   return (
     <div className="chart-container relative h-full w-full">
       <div ref={chartContainerRef} className="chart-wrapper h-full w-full" />
     </div>
   );
-};
+});
+
+TradingViewChart.displayName = "TradingViewChart";
 
 export default TradingViewChart;
