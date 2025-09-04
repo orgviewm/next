@@ -4,7 +4,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { ChevronDown, Menu } from "lucide-react";
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 import {
   Menubar,
@@ -302,8 +302,8 @@ const TitleBar = () => {
               62.8k
             </a>
             {session ? (
-              <Button size="xs" variant="outline" onClick={() => signOut()}>
-                Sign out
+              <Button size="xs" variant="outline" asChild>
+                <a href="/charts">Charts</a>
               </Button>
             ) : (
               <Button size="xs" variant="outline" asChild>
