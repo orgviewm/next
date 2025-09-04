@@ -52,6 +52,11 @@ const PANEL_PAGES = {
 
 type PanelPage = keyof typeof PANEL_PAGES;
 
+interface SymbolData {
+  SYMBOL_NAME: string;
+  EXCHANGE_SEGMENT: string;
+}
+
 const ChartsPage = () => {
   const { data: session } = useSession();
 
@@ -63,6 +68,8 @@ const ChartsPage = () => {
   const [isClientReady, setIsClientReady] = useState(false);
   const [isSymbolPopupOpen, setIsSymbolPopupOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("All");
+  const [symbolSearchQuery, setSymbolSearchQuery] = useState("");
+  const [symbolSuggestions, setSymbolSuggestions] = useState<SymbolData[]>([]);
   const [isTimeframeDropdownOpen, setIsTimeframeDropdownOpen] = useState(false);
   const [expandedSections, setExpandedSections] = useState({
     TICKS: false,
@@ -84,6 +91,25 @@ const ChartsPage = () => {
 
   // Search state for brokers
   const [brokerSearchQuery, setBrokerSearchQuery] = useState("");
+
+  // Symbol search function
+  const searchSymbols = async (query: string) => {
+    console.log("Searching for:", query);
+    try {
+      const response = await fetch("/api/search-symbols", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query }),
+      });
+      console.log("Response status:", response.status);
+      const data = await response.json();
+      console.log("Response data:", data);
+      setSymbolSuggestions(data.symbols || []);
+    } catch (error) {
+      console.error("Symbol search error:", error);
+      setSymbolSuggestions([]);
+    }
+  };
 
   // Refs for performance
   const containerRef = useRef<HTMLDivElement>(null);
@@ -573,86 +599,64 @@ const ChartsPage = () => {
           broker.name.toLowerCase().includes(brokerSearchQuery.toLowerCase()),
         );
 
-        const getTierColor = (tier: string) => {
-          switch (tier) {
-            case "Enterprise":
-              return "bg-white text-black";
-            case "Professional":
-              return "bg-gray-200 text-black";
-            default:
-              return "bg-gray-400 text-black";
-          }
+        const getTierColor = (_tier: string) => {
+          // Use muted, non-bright badges for all tiers
+          return "bg-muted text-foreground";
         };
 
         return (
           <div
             className={`${commonClasses} broker-page bg-background text-white`}
           >
-            <div className="mb-6 border-b border-white/20 pb-4">
+            <div className="mb-6 border-b border-border pb-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="select-none text-lg font-bold text-white">
+                  <h2 className="select-none text-lg font-bold text-foreground">
                     Enterprise Brokerage Network
                   </h2>
-                  <p className="mt-1 select-none text-xs text-white/70">
+                  <p className="mt-1 select-none text-xs text-muted-foreground">
                     Connect to institutional-grade trading infrastructure
                   </p>
                 </div>
                 <div className="relative w-80">
-                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-white/50" />
+                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-muted-foreground" />
                   <Input
                     type="text"
                     placeholder="Search brokers..."
                     value={brokerSearchQuery}
                     onChange={(e) => setBrokerSearchQuery(e.target.value)}
-                    className="select-none border-white/20 bg-white/10 pl-10 text-white placeholder:text-white/50 focus:border-white/40"
+                    className="select-none border-border bg-card pl-10 text-foreground placeholder:text-muted-foreground focus:border-border"
                   />
                 </div>
               </div>
             </div>
-            <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="grid grid-cols-6 gap-3">
               {filteredBrokers.map((broker, index) => (
                 <div
                   key={index}
-                  className="group select-none border border-white/20 bg-white/5 p-4 transition-all duration-200 hover:border-white/40 hover:bg-white/10"
+                  className="group aspect-square select-none rounded-md border border-border bg-card p-4 transition-colors hover:bg-muted"
                 >
                   <div className="mb-3 flex items-start justify-between">
-                    <div className="flex h-10 w-10 items-center justify-center bg-white text-sm font-bold text-black">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-sm border border-border bg-muted text-sm font-bold text-foreground">
                       {broker.name.charAt(0)}
                     </div>
                     <div
-                      className={`px-2 py-1 text-xs font-medium ${getTierColor(broker.tier)}`}
+                      className={`rounded px-2 py-1 text-xs font-medium ${getTierColor(broker.tier)}`}
                     >
                       {broker.tier}
                     </div>
                   </div>
-                  <h3 className="mb-2 select-none text-xs font-semibold leading-tight text-white">
+                  <h3 className="mb-2 select-none text-xs font-semibold leading-tight text-foreground">
                     {broker.name}
                   </h3>
-                  <p className="mb-3 select-none text-xs text-white/60">
+                  <p className="mb-3 select-none text-xs text-muted-foreground">
                     {broker.commission}
                   </p>
-                  <button className="w-full select-none bg-white px-3 py-2 text-xs font-medium text-black transition-colors hover:bg-white/90 group-hover:bg-white">
+                  <button className="w-full select-none rounded-md border border-border bg-transparent px-3 py-2 text-xs font-medium text-foreground transition-colors hover:bg-muted">
                     Connect
                   </button>
                 </div>
               ))}
-            </div>
-            <div className="mt-6 border-t border-white/20 pt-4">
-              <div className="grid grid-cols-3 gap-6 text-center">
-                <div>
-                  <div className="text-xl font-bold text-white">24</div>
-                  <div className="text-xs text-white/60">Connected Brokers</div>
-                </div>
-                <div>
-                  <div className="text-xl font-bold text-white">99.9%</div>
-                  <div className="text-xs text-white/60">Uptime SLA</div>
-                </div>
-                <div>
-                  <div className="text-xl font-bold text-white">&lt;10ms</div>
-                  <div className="text-xs text-white/60">Avg Latency</div>
-                </div>
-              </div>
             </div>
           </div>
         );
@@ -1426,10 +1430,8 @@ const ChartsPage = () => {
                   key={key}
                   variant="ghost"
                   size="sm"
-                  className={`h-6 select-none px-2 transition-all hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 ${
-                    activePage === key
-                      ? "bg-white/30 shadow-[0_0_8px_rgba(255,255,255,0.5)]"
-                      : ""
+                  className={`h-6 select-none px-2 transition-colors hover:bg-muted focus-visible:ring-0 focus-visible:ring-offset-0 ${
+                    activePage === key ? "bg-muted" : ""
                   }`}
                   onClick={() => handlePageClick(key as PanelPage)}
                   aria-pressed={activePage === key}
@@ -1526,6 +1528,18 @@ const ChartsPage = () => {
             <input
               type="text"
               placeholder="Search..."
+              value={symbolSearchQuery}
+              onChange={(e) => {
+                setSymbolSearchQuery(e.target.value);
+                if (
+                  (activeCategory === "All" || activeCategory === "Stocks") &&
+                  e.target.value.length > 0
+                ) {
+                  searchSymbols(e.target.value);
+                } else {
+                  setSymbolSuggestions([]);
+                }
+              }}
               className="absolute left-0 right-0 top-10 h-10 border-b border-t border-border bg-background px-3 focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
             <div className="absolute bottom-0 left-0 top-20 w-48 border-r border-border bg-muted/20">
@@ -1559,26 +1573,27 @@ const ChartsPage = () => {
             </div>
             <div className="absolute bottom-0 left-48 right-0 top-20 overflow-auto">
               <div className="space-y-1 p-2">
-                <div className="flex cursor-pointer items-center justify-between px-2 py-1 text-sm hover:bg-muted">
-                  <span>AAPL</span>
-                  <span className="text-muted-foreground">NASDAQ</span>
-                </div>
-                <div className="flex cursor-pointer items-center justify-between px-2 py-1 text-sm hover:bg-muted">
-                  <span>GOOGL</span>
-                  <span className="text-muted-foreground">NASDAQ</span>
-                </div>
-                <div className="flex cursor-pointer items-center justify-between px-2 py-1 text-sm hover:bg-muted">
-                  <span>MSFT</span>
-                  <span className="text-muted-foreground">NASDAQ</span>
-                </div>
-                <div className="flex cursor-pointer items-center justify-between px-2 py-1 text-sm hover:bg-muted">
-                  <span>TSLA</span>
-                  <span className="text-muted-foreground">NASDAQ</span>
-                </div>
-                <div className="flex cursor-pointer items-center justify-between px-2 py-1 text-sm hover:bg-muted">
-                  <span>AMZN</span>
-                  <span className="text-muted-foreground">NASDAQ</span>
-                </div>
+                {(activeCategory === "All" || activeCategory === "Stocks") &&
+                symbolSuggestions.length > 0 ? (
+                  symbolSuggestions.map((symbol, index) => (
+                    <div
+                      key={index}
+                      className="flex cursor-pointer items-center justify-between px-2 py-1 text-sm hover:bg-muted"
+                    >
+                      <span>{symbol.SYMBOL_NAME}</span>
+                      <span className="text-muted-foreground">
+                        {symbol.EXCHANGE_SEGMENT}
+                      </span>
+                    </div>
+                  ))
+                ) : (
+                  <div className="px-2 py-4 text-center text-sm text-muted-foreground">
+                    {symbolSearchQuery &&
+                    (activeCategory === "All" || activeCategory === "Stocks")
+                      ? "No symbols found"
+                      : "Search for symbols"}
+                  </div>
+                )}
               </div>
             </div>
             <button
