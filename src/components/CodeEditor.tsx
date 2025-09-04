@@ -1,13 +1,24 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useCallback } from "react";
-import { EditorView, keymap } from "@codemirror/view";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+  useMemo,
+} from "react";
+import { EditorView, keymap, lineNumbers } from "@codemirror/view";
 import { EditorState, Compartment } from "@codemirror/state";
 import { javascript } from "@codemirror/lang-javascript";
 import { oneDark } from "@codemirror/theme-one-dark";
 import { indentWithTab, indentLess } from "@codemirror/commands";
 import { autocompletion } from "@codemirror/autocomplete";
-import { indentUnit } from "@codemirror/language";
+import {
+  indentUnit,
+  syntaxHighlighting,
+  HighlightStyle,
+} from "@codemirror/language";
+import { tags } from "@lezer/highlight";
 
 interface CodeEditorProps {
   className?: string;
@@ -29,42 +40,59 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   const tabSizeCompartment = useRef(new Compartment());
 
   // Default code content
-  const defaultCode = `// Your trading strategy code here
+  const defaultCode = `// This Pine Script® code
 
-// Example: Simple Moving Average Crossover Strategy
-function onTick(data) {
-  const fastMA = calculateSMA(data.close, 9);
-  const slowMA = calculateSMA(data.close, 21);
+//@version=6
+indicator("My script")
+plot(close)`.trim();
 
-  if (fastMA > slowMA && !isPositionOpen()) {
-    // Buy signal
-    openPosition('BUY', 0.01);
-  } else if (fastMA < slowMA && isPositionOpen()) {
-    // Sell signal
-    closePosition();
-  }
-}
+  // Pine Script completions
+  const pineScriptCompletions = useMemo(
+    () => [
+      { label: "indicator", type: "function" },
+      { label: "strategy", type: "function" },
+      { label: "plot", type: "function" },
+      { label: "close", type: "variable" },
+      { label: "open", type: "variable" },
+      { label: "high", type: "variable" },
+      { label: "low", type: "variable" },
+      { label: "volume", type: "variable" },
+      { label: "ta.sma", type: "function" },
+      { label: "ta.ema", type: "function" },
+      { label: "ta.rsi", type: "function" },
+      { label: "ta.macd", type: "function" },
+      { label: "strategy.entry", type: "function" },
+      { label: "strategy.exit", type: "function" },
+      { label: "strategy.close", type: "function" },
+      { label: "math.max", type: "function" },
+      { label: "math.min", type: "function" },
+      { label: "array.new_float", type: "function" },
+      { label: "array.push", type: "function" },
+      { label: "if", type: "keyword" },
+      { label: "else", type: "keyword" },
+      { label: "for", type: "keyword" },
+      { label: "while", type: "keyword" },
+      { label: "var", type: "keyword" },
+      { label: "varip", type: "keyword" },
+    ],
+    [],
+  );
 
-function calculateSMA(prices, period) {
-  if (prices.length < period) return 0;
-  const sum = prices.slice(-period).reduce((a, b) => a + b, 0);
-  return sum / period;
-}
-
-function isPositionOpen() {
-  // Implement position checking logic
-  return false;
-}
-
-function openPosition(direction, size) {
-  // Implement position opening logic
-  console.log(\`Opening \${direction} position with size \${size}\`);
-}
-
-function closePosition() {
-  // Implement position closing logic
-  console.log('Closing position');
-}`.trim();
+  // Custom syntax highlighting
+  const customHighlighting = useMemo(
+    () =>
+      HighlightStyle.define([
+        { tag: tags.keyword, color: "#ff79c6" },
+        { tag: tags.string, color: "#f1fa8c" },
+        { tag: tags.comment, color: "#6272a4" },
+        { tag: tags.number, color: "#bd93f9" },
+        { tag: tags.function(tags.variableName), color: "#50fa7b" },
+        { tag: tags.variableName, color: "#8be9fd" },
+        { tag: tags.operator, color: "#ff79c6" },
+        { tag: tags.bracket, color: "#f8f8f2" },
+      ]),
+    [],
+  );
 
   // Load content from localStorage
   const loadContent = useCallback(() => {
@@ -105,15 +133,59 @@ function closePosition() {
         // Language support
         javascript({ typescript: true }),
 
-        // Theme
-        themeCompartment.current.of(oneDark),
+        // Syntax highlighting
+        syntaxHighlighting(customHighlighting),
+
+        // Theme - Custom dark theme to match charts page
+        themeCompartment.current.of(
+          EditorView.theme(
+            {
+              "&": {
+                backgroundColor: "hsl(0, 0%, 11%)",
+                color: "hsl(0, 0%, 95%)",
+              },
+              ".cm-content": {
+                backgroundColor: "hsl(0, 0%, 11%)",
+                caretColor: "hsl(0, 0%, 95%)",
+              },
+              ".cm-editor": {
+                backgroundColor: "hsl(0, 0%, 11%)",
+              },
+              ".cm-editor.cm-focused": {
+                backgroundColor: "hsl(0, 0%, 11%)",
+              },
+              ".cm-scroller": {
+                backgroundColor: "hsl(0, 0%, 11%)",
+                scrollbarWidth: "none",
+                "-ms-overflow-style": "none",
+              },
+              ".cm-scroller::-webkit-scrollbar": {
+                display: "none",
+              },
+              ".cm-gutters": {
+                backgroundColor: "hsl(0, 0%, 11%)",
+                borderRight: "1px solid hsl(0, 0%, 20.4%)",
+              },
+              ".cm-lineNumbers .cm-gutterElement": {
+                color: "hsl(0, 0%, 49%)",
+              },
+              ".cm-activeLine": {
+                backgroundColor: "hsl(0, 0%, 15%)",
+              },
+              ".cm-activeLineGutter": {
+                backgroundColor: "hsl(0, 0%, 15%)",
+              },
+            },
+            { dark: true },
+          ),
+        ),
 
         // Editor features
         EditorView.lineWrapping,
         EditorView.theme({
           "&": {
             height: height,
-            fontSize: "14px",
+            fontSize: "12px",
             fontFamily:
               "ui-monospace, SFMono-Regular, 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace",
           },
@@ -136,13 +208,27 @@ function closePosition() {
         tabSizeCompartment.current.of(indentUnit.of("  ")),
 
         // Line numbers
+        lineNumbers(),
         EditorView.lineWrapping,
-        // Note: Line numbers are enabled by default in oneDark theme
 
         // Autocompletion
         autocompletion({
           activateOnTyping: true,
           maxRenderedOptions: 10,
+          override: [
+            (context) => {
+              const word = context.matchBefore(/\w*/);
+              if (!word || (word.from === word.to && !context.explicit))
+                return null;
+              return {
+                from: word.from,
+                options: pineScriptCompletions.map((item) => ({
+                  label: item.label,
+                  type: item.type,
+                })),
+              };
+            },
+          ],
         }),
 
         // Keyboard shortcuts
@@ -207,7 +293,15 @@ function closePosition() {
         viewRef.current = null;
       }
     };
-  }, [loadContent, saveContent, handleSave, height, onChange]);
+  }, [
+    loadContent,
+    saveContent,
+    handleSave,
+    height,
+    onChange,
+    customHighlighting,
+    pineScriptCompletions,
+  ]);
 
   // Handle resize
   useEffect(() => {
@@ -232,7 +326,7 @@ function closePosition() {
   return (
     <div
       ref={editorRef}
-      className={`w-full overflow-hidden rounded-md border border-border bg-background ${className}`}
+      className={`w-full overflow-hidden bg-background ${className}`}
       style={{ height }}
     />
   );

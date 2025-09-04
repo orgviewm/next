@@ -123,7 +123,7 @@ function FeatureSection() {
               <div className="w-full rounded-r-lg border border-input bg-background px-4 py-4 text-sm text-input  ">
                 @gmail.com
               </div>
-              <div className="w-full rounded-r-lg border border-input bg-background px-4 py-4 text-sm text-input group-hover:border-[#3FCF8E] group-hover:text-[#3FCF8E]">
+              <div className="w-full rounded-r-lg border border-input bg-background px-4 py-4 text-sm text-input group-hover:border-foreground group-hover:text-foreground">
                 ccess Required
               </div>
               <div className="w-full rounded-r-lg border border-input bg-background px-4 py-4 text-sm text-input ">
@@ -134,7 +134,7 @@ function FeatureSection() {
               <div className="w-full rounded-l-lg border border-input bg-background px-4 py-4 text-sm text-input ">
                 alex160198
               </div>
-              <div className="w-full whitespace-nowrap rounded-l-lg border border-input bg-background px-4 py-4 text-sm text-input group-hover:border-[#3FCF8E] group-hover:text-[#3FCF8E]">
+              <div className="w-full whitespace-nowrap rounded-l-lg border border-input bg-background px-4 py-4 text-sm text-input group-hover:border-foreground group-hover:text-foreground">
                 Access Required
               </div>
               <div className="w-full rounded-l-lg border border-input bg-background px-4 py-4 text-sm text-input ">
@@ -185,114 +185,114 @@ function FeatureSection() {
           <div className="relative  overflow-x-hidden">
             <div className="relative left-0 z-10 flex h-full w-auto animate-marquee items-end pb-2 transition-transform will-change-transform paused group-hover:running">
               <div className="ml-2 flex flex-col gap-2 md:gap-2">
-                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-brand md:h-[62px] md:w-[62px] md:min-w-[62px]">
+                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-foreground md:h-[62px] md:w-[62px] md:min-w-[62px]">
                   <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
                 </div>
-                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-brand md:h-[62px] md:w-[62px] md:min-w-[62px]">
+                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-foreground md:h-[62px] md:w-[62px] md:min-w-[62px]">
                   <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
                 </div>
-                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-brand md:h-[62px] md:w-[62px] md:min-w-[62px]">
-                  <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
-                </div>
-              </div>
-              <div className="ml-2 flex flex-col gap-2 md:gap-2">
-                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-brand md:h-[62px] md:w-[62px] md:min-w-[62px]">
-                  <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
-                </div>
-                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-brand md:h-[62px] md:w-[62px] md:min-w-[62px]">
-                  <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
-                </div>
-                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-brand md:h-[62px] md:w-[62px] md:min-w-[62px]">
+                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-foreground md:h-[62px] md:w-[62px] md:min-w-[62px]">
                   <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
                 </div>
               </div>
               <div className="ml-2 flex flex-col gap-2 md:gap-2">
-                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-brand md:h-[62px] md:w-[62px] md:min-w-[62px]">
+                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-foreground md:h-[62px] md:w-[62px] md:min-w-[62px]">
                   <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
                 </div>
-                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-brand md:h-[62px] md:w-[62px] md:min-w-[62px]">
+                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-foreground md:h-[62px] md:w-[62px] md:min-w-[62px]">
                   <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
                 </div>
-                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-brand md:h-[62px] md:w-[62px] md:min-w-[62px]">
-                  <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
-                </div>
-              </div>
-              <div className="ml-2 flex flex-col gap-2 md:gap-2">
-                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-brand md:h-[62px] md:w-[62px] md:min-w-[62px]">
-                  <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
-                </div>
-                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-brand md:h-[62px] md:w-[62px] md:min-w-[62px]">
-                  <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
-                </div>
-                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-brand md:h-[62px] md:w-[62px] md:min-w-[62px]">
+                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-foreground md:h-[62px] md:w-[62px] md:min-w-[62px]">
                   <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
                 </div>
               </div>
               <div className="ml-2 flex flex-col gap-2 md:gap-2">
-                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-brand md:h-[62px] md:w-[62px] md:min-w-[62px]">
+                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-foreground md:h-[62px] md:w-[62px] md:min-w-[62px]">
                   <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
                 </div>
-                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-brand md:h-[62px] md:w-[62px] md:min-w-[62px]">
+                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-foreground md:h-[62px] md:w-[62px] md:min-w-[62px]">
                   <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
                 </div>
-                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-brand md:h-[62px] md:w-[62px] md:min-w-[62px]">
+                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-foreground md:h-[62px] md:w-[62px] md:min-w-[62px]">
+                  <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
+                </div>
+              </div>
+              <div className="ml-2 flex flex-col gap-2 md:gap-2">
+                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-foreground md:h-[62px] md:w-[62px] md:min-w-[62px]">
+                  <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
+                </div>
+                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-foreground md:h-[62px] md:w-[62px] md:min-w-[62px]">
+                  <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
+                </div>
+                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-foreground md:h-[62px] md:w-[62px] md:min-w-[62px]">
+                  <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
+                </div>
+              </div>
+              <div className="ml-2 flex flex-col gap-2 md:gap-2">
+                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-foreground md:h-[62px] md:w-[62px] md:min-w-[62px]">
+                  <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
+                </div>
+                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-foreground md:h-[62px] md:w-[62px] md:min-w-[62px]">
+                  <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
+                </div>
+                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-foreground md:h-[62px] md:w-[62px] md:min-w-[62px]">
                   <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
                 </div>
               </div>
             </div>
             <div className="absolute left-0 top-0 z-10 flex h-full w-auto animate-marquee2 items-end pb-2 transition-transform will-change-transform paused group-hover:running">
               <div className="ml-2 flex flex-col gap-2 md:gap-2">
-                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-brand md:h-[62px] md:w-[62px] md:min-w-[62px]">
+                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-foreground md:h-[62px] md:w-[62px] md:min-w-[62px]">
                   <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
                 </div>
-                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-brand md:h-[62px] md:w-[62px] md:min-w-[62px]">
+                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-foreground md:h-[62px] md:w-[62px] md:min-w-[62px]">
                   <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
                 </div>
-                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-brand md:h-[62px] md:w-[62px] md:min-w-[62px]">
-                  <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
-                </div>
-              </div>
-              <div className="ml-2 flex flex-col gap-2 md:gap-2">
-                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-brand md:h-[62px] md:w-[62px] md:min-w-[62px]">
-                  <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
-                </div>
-                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-brand md:h-[62px] md:w-[62px] md:min-w-[62px]">
-                  <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
-                </div>
-                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-brand md:h-[62px] md:w-[62px] md:min-w-[62px]">
+                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-foreground md:h-[62px] md:w-[62px] md:min-w-[62px]">
                   <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
                 </div>
               </div>
               <div className="ml-2 flex flex-col gap-2 md:gap-2">
-                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-brand md:h-[62px] md:w-[62px] md:min-w-[62px]">
+                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-foreground md:h-[62px] md:w-[62px] md:min-w-[62px]">
                   <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
                 </div>
-                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-brand md:h-[62px] md:w-[62px] md:min-w-[62px]">
+                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-foreground md:h-[62px] md:w-[62px] md:min-w-[62px]">
                   <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
                 </div>
-                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-brand md:h-[62px] md:w-[62px] md:min-w-[62px]">
-                  <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
-                </div>
-              </div>
-              <div className="ml-2 flex flex-col gap-2 md:gap-2">
-                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-brand md:h-[62px] md:w-[62px] md:min-w-[62px]">
-                  <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
-                </div>
-                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-brand md:h-[62px] md:w-[62px] md:min-w-[62px]">
-                  <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
-                </div>
-                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-brand md:h-[62px] md:w-[62px] md:min-w-[62px]">
+                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-foreground md:h-[62px] md:w-[62px] md:min-w-[62px]">
                   <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
                 </div>
               </div>
               <div className="ml-2 flex flex-col gap-2 md:gap-2">
-                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-brand md:h-[62px] md:w-[62px] md:min-w-[62px]">
+                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-foreground md:h-[62px] md:w-[62px] md:min-w-[62px]">
                   <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
                 </div>
-                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-brand md:h-[62px] md:w-[62px] md:min-w-[62px]">
+                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-foreground md:h-[62px] md:w-[62px] md:min-w-[62px]">
                   <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
                 </div>
-                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-brand md:h-[62px] md:w-[62px] md:min-w-[62px]">
+                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-foreground md:h-[62px] md:w-[62px] md:min-w-[62px]">
+                  <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
+                </div>
+              </div>
+              <div className="ml-2 flex flex-col gap-2 md:gap-2">
+                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-foreground md:h-[62px] md:w-[62px] md:min-w-[62px]">
+                  <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
+                </div>
+                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-foreground md:h-[62px] md:w-[62px] md:min-w-[62px]">
+                  <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
+                </div>
+                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-foreground md:h-[62px] md:w-[62px] md:min-w-[62px]">
+                  <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
+                </div>
+              </div>
+              <div className="ml-2 flex flex-col gap-2 md:gap-2">
+                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-foreground md:h-[62px] md:w-[62px] md:min-w-[62px]">
+                  <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
+                </div>
+                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-foreground md:h-[62px] md:w-[62px] md:min-w-[62px]">
+                  <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
+                </div>
+                <div className="flex h-[60px] w-[60px] items-center justify-center rounded-lg border border-border bg-background hover:border-foreground md:h-[62px] md:w-[62px] md:min-w-[62px]">
                   <ImgPlaceHolderIcon color="hsl(var(--muted-foreground))" />
                 </div>
               </div>

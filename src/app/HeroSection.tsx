@@ -15,7 +15,7 @@ const HeroSection = () => {
         <div className="block bg-gradient-to-b from-foreground to-foreground-light bg-clip-text text-7xl text-transparent">
           Build in a weekend
         </div>
-        <div className="block bg-gradient-to-br from-[#3ECF8E] via-[#3ECF8E] to-[#3ecfb2] bg-clip-text text-7xl text-transparent md:ml-0">
+        <div className="block bg-gradient-to-b from-foreground to-foreground-light bg-clip-text text-7xl text-transparent md:ml-0">
           Scale to millions
         </div>
       </div>

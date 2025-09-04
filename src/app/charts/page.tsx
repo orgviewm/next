@@ -497,110 +497,180 @@ const ChartsPage = () => {
     switch (activePage) {
       case "broker":
         const allBrokers = [
-          { name: "MetaTrader 4", status: "Available", color: "bg-blue-500" },
-          { name: "MetaTrader 5", status: "Available", color: "bg-green-500" },
           {
             name: "Interactive Brokers",
-            status: "Available",
-            color: "bg-orange-500",
+            tier: "Enterprise",
+            commission: "$0.005/share",
           },
-          { name: "TD Ameritrade", status: "Available", color: "bg-red-500" },
-          { name: "E*TRADE", status: "Available", color: "bg-purple-500" },
           {
             name: "Charles Schwab",
-            status: "Available",
-            color: "bg-indigo-500",
+            tier: "Professional",
+            commission: "$0 commissions",
           },
-          { name: "Fidelity", status: "Available", color: "bg-teal-500" },
-          { name: "Robinhood", status: "Available", color: "bg-pink-500" },
-          { name: "Webull", status: "Available", color: "bg-yellow-500" },
-          { name: "Thinkorswim", status: "Available", color: "bg-cyan-500" },
-          { name: "TradingView", status: "Available", color: "bg-gray-500" },
-          { name: "Binance", status: "Available", color: "bg-amber-500" },
           {
-            name: "Coinbase Pro",
-            status: "Available",
-            color: "bg-emerald-500",
+            name: "Fidelity",
+            tier: "Professional",
+            commission: "$0 commissions",
           },
-          { name: "Kraken", status: "Available", color: "bg-violet-500" },
-          { name: "OANDA", status: "Available", color: "bg-rose-500" },
-          { name: "IG Markets", status: "Available", color: "bg-slate-500" },
-          { name: "CMC Markets", status: "Available", color: "bg-stone-500" },
-          { name: "Pepperstone", status: "Available", color: "bg-neutral-500" },
-          { name: "IC Markets", status: "Available", color: "bg-lime-500" },
-          { name: "FXTM", status: "Available", color: "bg-sky-500" },
-          { name: "XM", status: "Available", color: "bg-fuchsia-500" },
-          { name: "Exness", status: "Available", color: "bg-emerald-600" },
-          { name: "Deriv", status: "Available", color: "bg-orange-600" },
-          { name: "Plus500", status: "Available", color: "bg-purple-600" },
-          { name: "eToro", status: "Available", color: "bg-blue-600" },
-          { name: "AvaTrade", status: "Available", color: "bg-green-600" },
-          { name: "Forex.com", status: "Available", color: "bg-red-600" },
+          {
+            name: "TD Ameritrade",
+            tier: "Professional",
+            commission: "$0 commissions",
+          },
+          { name: "E*TRADE", tier: "Standard", commission: "$0 commissions" },
+          { name: "MetaTrader 5", tier: "Enterprise", commission: "Variable" },
+          { name: "MetaTrader 4", tier: "Standard", commission: "Variable" },
+          {
+            name: "Thinkorswim",
+            tier: "Professional",
+            commission: "$0.65/contract",
+          },
+          { name: "OANDA", tier: "Professional", commission: "Spread-based" },
+          {
+            name: "IG Markets",
+            tier: "Professional",
+            commission: "Spread-based",
+          },
+          { name: "CMC Markets", tier: "Standard", commission: "Spread-based" },
+          {
+            name: "Pepperstone",
+            tier: "Professional",
+            commission: "From $3.5/lot",
+          },
+          {
+            name: "IC Markets",
+            tier: "Professional",
+            commission: "From $3/lot",
+          },
+          { name: "FXTM", tier: "Standard", commission: "Spread-based" },
+          { name: "XM", tier: "Standard", commission: "Spread-based" },
+          { name: "Exness", tier: "Professional", commission: "From $3.5/lot" },
           {
             name: "Admiral Markets",
-            status: "Available",
-            color: "bg-indigo-600",
+            tier: "Professional",
+            commission: "From $3/lot",
           },
+          { name: "Forex.com", tier: "Standard", commission: "Spread-based" },
+          { name: "AvaTrade", tier: "Standard", commission: "Spread-based" },
+          { name: "Plus500", tier: "Standard", commission: "Spread-based" },
+          { name: "eToro", tier: "Standard", commission: "Variable" },
+          { name: "Binance", tier: "Professional", commission: "0.1% spot" },
+          {
+            name: "Coinbase Pro",
+            tier: "Professional",
+            commission: "0.5% taker",
+          },
+          { name: "Kraken", tier: "Professional", commission: "0.26% taker" },
         ];
 
         const filteredBrokers = allBrokers.filter((broker) =>
           broker.name.toLowerCase().includes(brokerSearchQuery.toLowerCase()),
         );
 
+        const getTierColor = (tier: string) => {
+          switch (tier) {
+            case "Enterprise":
+              return "bg-white text-black";
+            case "Professional":
+              return "bg-gray-200 text-black";
+            default:
+              return "bg-gray-400 text-black";
+          }
+        };
+
         return (
-          <div className={commonClasses}>
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="select-none text-lg font-semibold">
-                Connect through our trusted brokers.
-              </h2>
-              <div className="relative w-64">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-muted-foreground" />
-                <Input
-                  type="text"
-                  placeholder="Search brokers..."
-                  value={brokerSearchQuery}
-                  onChange={(e) => setBrokerSearchQuery(e.target.value)}
-                  className="select-none pl-10"
-                />
+          <div className={`${commonClasses} broker-page bg-black text-white`}>
+            <div className="mb-6 border-b border-white/20 pb-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="select-none text-lg font-bold text-white">
+                    Enterprise Brokerage Network
+                  </h2>
+                  <p className="mt-1 select-none text-xs text-white/70">
+                    Connect to institutional-grade trading infrastructure
+                  </p>
+                </div>
+                <div className="relative w-80">
+                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-white/50" />
+                  <Input
+                    type="text"
+                    placeholder="Search brokers..."
+                    value={brokerSearchQuery}
+                    onChange={(e) => setBrokerSearchQuery(e.target.value)}
+                    className="select-none border-white/20 bg-white/10 pl-10 text-white placeholder:text-white/50 focus:border-white/40"
+                  />
+                </div>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {filteredBrokers.map((broker, index) => (
                 <div
                   key={index}
-                  className="flex aspect-square select-none flex-col items-center justify-center rounded-lg border border-border p-4 text-center transition-all duration-200 hover:scale-105 hover:shadow-lg"
+                  className="group select-none border border-white/20 bg-white/5 p-4 transition-all duration-200 hover:border-white/40 hover:bg-white/10"
                 >
-                  <div
-                    className={`h-12 w-12 ${broker.color} mb-3 flex select-none items-center justify-center rounded-lg text-lg font-bold text-white shadow-md`}
-                  >
-                    {broker.name.charAt(0)}
+                  <div className="mb-3 flex items-start justify-between">
+                    <div className="flex h-10 w-10 items-center justify-center bg-white text-sm font-bold text-black">
+                      {broker.name.charAt(0)}
+                    </div>
+                    <div
+                      className={`px-2 py-1 text-xs font-medium ${getTierColor(broker.tier)}`}
+                    >
+                      {broker.tier}
+                    </div>
                   </div>
-                  <h3 className="mb-1 select-none text-sm font-semibold leading-tight">
+                  <h3 className="mb-2 select-none text-xs font-semibold leading-tight text-white">
                     {broker.name}
                   </h3>
-                  <p className="mb-3 select-none text-xs text-muted-foreground">
-                    {broker.status}
+                  <p className="mb-3 select-none text-xs text-white/60">
+                    {broker.commission}
                   </p>
-                  <button className="w-full select-none rounded-md border border-gray-300 bg-white px-3 py-2 text-xs font-medium text-black transition-colors hover:bg-gray-100">
+                  <button className="w-full select-none bg-white px-3 py-2 text-xs font-medium text-black transition-colors hover:bg-white/90 group-hover:bg-white">
                     Connect
                   </button>
                 </div>
               ))}
             </div>
+            <div className="mt-6 border-t border-white/20 pt-4">
+              <div className="grid grid-cols-3 gap-6 text-center">
+                <div>
+                  <div className="text-xl font-bold text-white">24</div>
+                  <div className="text-xs text-white/60">Connected Brokers</div>
+                </div>
+                <div>
+                  <div className="text-xl font-bold text-white">99.9%</div>
+                  <div className="text-xs text-white/60">Uptime SLA</div>
+                </div>
+                <div>
+                  <div className="text-xl font-bold text-white">&lt;10ms</div>
+                  <div className="text-xs text-white/60">Avg Latency</div>
+                </div>
+              </div>
+            </div>
           </div>
         );
       case "codeEditor":
         return (
-          <div className={commonClasses}>
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="select-none text-lg font-semibold">Code Editor</h2>
-              <div className="select-none text-xs text-muted-foreground">
-                Ctrl+S to save
+          <div className="code-editor-page h-full w-full p-0">
+            <div className="flex w-full items-center justify-between border-b border-border bg-background px-3 py-2.5">
+              <div className="flex items-center gap-2">
+                <span className="flex select-none items-center gap-1 text-sm text-white">
+                  <span>~</span>
+                  <span>Untitled script</span>
+                </span>
+                <button className="flex select-none items-center gap-1 text-xs text-white/70 hover:text-white">
+                  <span>📁</span>
+                  <span>Add to chart</span>
+                </button>
+              </div>
+              <div className="flex items-center gap-2">
+                <button className="select-none rounded-full bg-white/10 px-3 py-1 text-xs text-white hover:bg-white/20">
+                  Publish indicator
+                </button>
+                <button className="select-none text-xs text-white/70 hover:text-white">
+                  ⋯
+                </button>
               </div>
             </div>
-            <p className="mb-4 select-none text-muted-foreground">
-              Write and edit your trading strategies.
-            </p>
             <div className="h-full">
               <CodeEditor height="100%" />
             </div>
@@ -608,78 +678,122 @@ const ChartsPage = () => {
         );
       case "strategyTester":
         return (
-          <div className={commonClasses}>
-            <h2 className="mb-4 select-none text-lg font-semibold">
-              Strategy Tester
-            </h2>
-            <p className="mb-4 select-none text-muted-foreground">
-              Backtest your trading strategies.
-            </p>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="select-none rounded-lg border border-border p-3">
-                <h3 className="mb-2 select-none font-medium">Total Return</h3>
-                <p className="select-none text-2xl font-bold text-green-400">
-                  +12.5%
-                </p>
+          <div className="flex h-full w-full flex-col items-center justify-center bg-background p-8 text-center">
+            <div className="mb-6">
+              <div className="mb-4 flex items-center justify-center">
+                <svg
+                  width="48"
+                  height="48"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  className="text-white"
+                >
+                  <rect
+                    x="6"
+                    y="4"
+                    width="4"
+                    height="16"
+                    fill="currentColor"
+                    opacity="0.7"
+                  />
+                  <rect
+                    x="14"
+                    y="8"
+                    width="4"
+                    height="12"
+                    fill="currentColor"
+                    opacity="0.7"
+                  />
+                  <path
+                    d="M8 4L8 2M16 8L16 6M8 20L8 22M16 20L16 22"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                </svg>
               </div>
-              <div className="select-none rounded-lg border border-border p-3">
-                <h3 className="mb-2 select-none font-medium">Max Drawdown</h3>
-                <p className="select-none text-2xl font-bold text-red-400">
-                  -3.2%
-                </p>
-              </div>
+              <h2 className="mb-2 text-lg font-semibold text-white">
+                Strategy Tester
+              </h2>
+              <p className="max-w-md text-sm text-white/70">
+                To test a strategy, apply it to the chart. Make sure to select
+                the right symbol and time interval you&apos;d like to test.
+              </p>
             </div>
+            <button className="rounded bg-white/10 px-4 py-2 text-sm text-white transition-colors hover:bg-white/20">
+              Load your strategy
+            </button>
           </div>
         );
       case "replayTrading":
         return (
-          <div className={commonClasses}>
-            <h2 className="mb-4 select-none text-lg font-semibold">
-              Replay Trading
-            </h2>
-            <p className="mb-4 select-none text-muted-foreground">
-              Practice trading with historical data.
-            </p>
-            <div className="mb-4 flex items-center gap-4">
-              <Button size="sm" className="select-none">
-                Play
-              </Button>
-              <Button size="sm" variant="outline" className="select-none">
-                Pause
-              </Button>
-              <Button size="sm" variant="outline" className="select-none">
-                Reset
-              </Button>
+          <div className="flex h-full w-full flex-col items-center justify-center bg-background p-8 text-center">
+            <div className="mb-6">
+              <div className="mb-4 flex items-center justify-center">
+                <div className="relative">
+                  <svg
+                    width="48"
+                    height="48"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    className="text-white"
+                  >
+                    <rect
+                      x="3"
+                      y="6"
+                      width="18"
+                      height="12"
+                      rx="2"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      fill="none"
+                    />
+                    <path d="M8 10l4 2-4 2v-4z" fill="currentColor" />
+                  </svg>
+                  <div className="absolute -bottom-1 -right-1 rounded-full bg-white p-1">
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      className="text-black"
+                    >
+                      <path d="M11 7l-7 5 7 5V7z" fill="currentColor" />
+                      <path d="M18 7l-7 5 7 5V7z" fill="currentColor" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <h2 className="mb-2 text-lg font-semibold text-white">
+                Advanced analysis for your Bar Replay
+              </h2>
+              <p className="max-w-md text-sm text-white/70">
+                With replay mode, you can get extended statistics about your
+                trading on historical data. Open Bar Replay, make a trade, and
+                start your analysis.
+              </p>
             </div>
-            <div className="select-none text-sm text-muted-foreground">
-              Speed: 1x | Date: 2024-01-15 | Balance: $10,000
-            </div>
+            <button className="rounded bg-white/10 px-4 py-2 text-sm text-white transition-colors hover:bg-white/20">
+              Launch Bar Replay
+            </button>
           </div>
         );
       case "tradingPanel":
         return (
-          <div className={commonClasses}>
-            <h2 className="mb-4 select-none text-lg font-semibold">
-              Trading Panel
-            </h2>
-            <p className="mb-4 select-none text-muted-foreground">
-              Execute trades and manage positions.
-            </p>
-            <div className="grid grid-cols-2 gap-4">
-              <Button className="h-12 select-none" variant="default">
-                Buy
-              </Button>
-              <Button className="h-12 select-none" variant="destructive">
-                Sell
-              </Button>
-            </div>
-            <div className="mt-4 select-none rounded-lg border border-border p-3">
-              <h3 className="mb-2 select-none font-medium">Position Size</h3>
-              <input
-                type="number"
-                className="w-full select-none rounded border border-border bg-background p-2"
-                placeholder="0.01"
-              />
+          <div className="flex h-full w-full flex-col items-center justify-center bg-background p-8 text-center">
+            <div className="mb-6">
+              <p className="mb-2 text-sm text-blue-400">Need a broker?</p>
+              <h2 className="mb-6 text-xl font-semibold text-white">
+                Top trading is one decision away
+              </h2>
+              <div className="flex items-center gap-4">
+                <button className="rounded-full bg-white px-6 py-2 text-sm font-medium text-black transition-colors hover:bg-white/90">
+                  Open account
+                </button>
+                <button className="rounded-full bg-gray-600 px-6 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-500">
+                  Explore brokers
+                </button>
+              </div>
             </div>
           </div>
         );
@@ -754,7 +868,7 @@ const ChartsPage = () => {
                 onClick={() => setIsSymbolPopupOpen(true)}
               >
                 <Search className="mr-1 h-4 w-4" />
-                <span className="select-none text-sm">Symbol</span>
+                <span className="select-none text-xs">Symbol</span>
               </Button>
               <div className="relative" ref={timeframeDropdownRef}>
                 <Button
@@ -767,7 +881,7 @@ const ChartsPage = () => {
                     setIsTimeframeDropdownOpen(!isTimeframeDropdownOpen);
                   }}
                 >
-                  <span className="select-none text-sm">
+                  <span className="select-none text-xs">
                     {selectedTimeframe}
                   </span>
                 </Button>
@@ -1187,7 +1301,7 @@ const ChartsPage = () => {
                 className="h-6 select-none px-2 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
                 onClick={() => setIsIndicatorPopupOpen(true)}
               >
-                <span className="select-none text-sm">Indicator</span>
+                <span className="select-none text-xs">Indicator</span>
               </Button>
             </div>
             <div className="flex items-center gap-2">
@@ -1218,7 +1332,7 @@ const ChartsPage = () => {
                 size="sm"
                 className="-mr-4 h-6 select-none px-2 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
               >
-                <span className="select-none text-sm">Publish</span>
+                <span className="select-none text-xs">Publish</span>
               </Button>
             </div>
           </div>
@@ -1251,7 +1365,9 @@ const ChartsPage = () => {
         aria-label="Bottom panel"
       >
         {panelHeight > 0 && (
-          <div className="panel-content h-full">{renderPanelContent()}</div>
+          <div className="panel-content h-full w-full">
+            {renderPanelContent()}
+          </div>
         )}
       </div>
 
@@ -1293,19 +1409,22 @@ const ChartsPage = () => {
                   key={key}
                   variant="ghost"
                   size="sm"
-                  className={`h-6 select-none px-2 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 ${
-                    activePage === key ? "bg-accent/20" : ""
+                  className={`h-6 select-none px-2 transition-all hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 ${
+                    activePage === key
+                      ? "bg-white/30 shadow-[0_0_8px_rgba(255,255,255,0.5)]"
+                      : ""
                   }`}
                   onClick={() => handlePageClick(key as PanelPage)}
                   aria-pressed={activePage === key}
                 >
-                  <span className="select-none text-sm">{label}</span>
+                  <span className="select-none text-xs">{label}</span>
                 </Button>
               ))}
             </div>
             <LiveTimestamp />
           </div>
         </div>
+        {panelHeight > 0 && <div className="h-px bg-border" />}
       </div>
 
       <div className="fixed bottom-8 right-0 top-8 w-10 select-none border-l border-border bg-background">

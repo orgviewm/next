@@ -155,3 +155,23 @@ body {
 .panel-content::-webkit-scrollbar-thumb:hover {
   background: hsl(var(--muted-foreground));
 }
+
+/* Hide scrollbar in broker page */
+.broker-page {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.broker-page::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar in code editor page */
+.code-editor-page {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.code-editor-page::-webkit-scrollbar {
+  display: none;
+}
