@@ -302,11 +302,11 @@ const TitleBar = () => {
               62.8k
             </a>
             {session ? (
-              <Button size="xs" variant="outline" asChild>
+              <Button size="sm" variant="outline" asChild>
                 <a href="/charts">Charts</a>
               </Button>
             ) : (
-              <Button size="xs" variant="outline" asChild>
+              <Button size="sm" variant="outline" asChild>
                 <a href="/auth">Sign in</a>
               </Button>
             )}

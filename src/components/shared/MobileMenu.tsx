@@ -27,7 +27,7 @@ const MobileMenu = ({ onClose }: any) => {
       <div className="absolute bottom-0 left-0 right-0 bg-background p-4">
         <Button
           className="w-full bg-secondary text-xs"
-          size="xs"
+          size="sm"
           variant="outline"
           asChild
         >

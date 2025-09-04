@@ -18,7 +18,11 @@ import {
   IoCalendarNumberOutline,
 } from "react-icons/io5";
 import { GoScreenFull } from "react-icons/go";
-import { LuAlarmClockCheck, LuCircleHelp } from "react-icons/lu";
+import {
+  LuAlarmClockCheck,
+  LuCircleHelp,
+  LuBrainCircuit,
+} from "react-icons/lu";
 import { MdOutlineEditNotifications } from "react-icons/md";
 import { CgCommunity } from "react-icons/cg";
 import { AiOutlineProduct } from "react-icons/ai";
@@ -75,6 +79,8 @@ const ChartsPage = () => {
     useState("Technical");
   const [isIndicatorPopupOpen, setIsIndicatorPopupOpen] = useState(false);
   const [isSettingsPopupOpen, setIsSettingsPopupOpen] = useState(false);
+  const [selectedSettingsCategory, setSelectedSettingsCategory] =
+    useState("Symbol");
 
   // Search state for brokers
   const [brokerSearchQuery, setBrokerSearchQuery] = useState("");
@@ -579,7 +585,9 @@ const ChartsPage = () => {
         };
 
         return (
-          <div className={`${commonClasses} broker-page bg-black text-white`}>
+          <div
+            className={`${commonClasses} broker-page bg-background text-white`}
+          >
             <div className="mb-6 border-b border-white/20 pb-4">
               <div className="flex items-center justify-between">
                 <div>
@@ -822,7 +830,7 @@ const ChartsPage = () => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
                   align="start"
-                  className="w-48 border-[hsl(0,0%,20.4%)] bg-[hsl(0,0%,11%)]"
+                  className="w-56 border-[hsl(0,0%,20.4%)] bg-[hsl(0,0%,11%)]"
                 >
                   {session?.user?.email && (
                     <div className="border-b border-[hsl(0,0%,20.4%)] px-2 py-1.5 text-xs text-[hsl(0,0%,70%)]">
@@ -1303,6 +1311,15 @@ const ChartsPage = () => {
               >
                 <span className="select-none text-xs">Indicator</span>
               </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-6 select-none px-2 transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+                onClick={() => window.open("/ai-chat", "_blank")}
+              >
+                <LuBrainCircuit className="mr-1 h-4 w-4" />
+                <span className="select-none text-xs">AI</span>
+              </Button>
             </div>
             <div className="flex items-center gap-2">
               <Button
@@ -1652,59 +1669,364 @@ const ChartsPage = () => {
             </h2>
             <div className="absolute bottom-0 left-0 top-10 w-48 border-r border-border bg-muted/20">
               <div className="space-y-1 p-2">
-                <div className="cursor-pointer bg-accent/20 px-2 py-1 text-sm shadow-[0_0_8px_rgba(255,255,255,0.3)] transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)]">
-                  General
-                </div>
-                <div className="cursor-pointer px-2 py-1 text-sm transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)]">
-                  Chart
-                </div>
-                <div className="cursor-pointer px-2 py-1 text-sm transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)]">
-                  Trading
-                </div>
-                <div className="cursor-pointer px-2 py-1 text-sm transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)]">
-                  Notifications
-                </div>
-                <div className="cursor-pointer px-2 py-1 text-sm transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)]">
-                  Account
-                </div>
-                <div className="cursor-pointer px-2 py-1 text-sm transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)]">
-                  Privacy
-                </div>
+                {[
+                  "Symbol",
+                  "Status line",
+                  "Scales and lines",
+                  "Canvas",
+                  "Trading",
+                  "Alerts",
+                  "Events",
+                ].map((category) => (
+                  <div
+                    key={category}
+                    className={`cursor-pointer px-2 py-1 text-sm transition-shadow hover:bg-transparent hover:shadow-[0_0_8px_rgba(255,255,255,0.3)] ${
+                      selectedSettingsCategory === category
+                        ? "bg-accent/20 shadow-[0_0_8px_rgba(255,255,255,0.3)]"
+                        : ""
+                    }`}
+                    onClick={() => setSelectedSettingsCategory(category)}
+                  >
+                    {category}
+                  </div>
+                ))}
               </div>
             </div>
             <div className="absolute bottom-0 left-48 right-0 top-10 overflow-auto">
-              <div className="space-y-4 p-4">
-                <div className="space-y-2">
-                  <h3 className="text-sm font-medium">Theme</h3>
-                  <div className="flex gap-2">
-                    <button className="rounded border border-border px-3 py-1 text-sm hover:bg-muted">
-                      Light
-                    </button>
-                    <button className="rounded border border-border bg-accent/20 px-3 py-1 text-sm">
-                      Dark
-                    </button>
-                    <button className="rounded border border-border px-3 py-1 text-sm hover:bg-muted">
-                      Auto
-                    </button>
+              <div className="space-y-4 p-4 pb-20">
+                {selectedSettingsCategory === "Symbol" && (
+                  <>
+                    <div className="space-y-3">
+                      <h3 className="text-sm font-medium text-white">
+                        Candles
+                      </h3>
+                      <div className="flex items-center space-x-2">
+                        <input type="checkbox" className="h-4 w-4" />
+                        <span className="text-sm">
+                          Color bars based on previous close
+                        </span>
+                      </div>
+                      <div className="space-y-2">
+                        <div className="flex items-center space-x-2">
+                          <input
+                            type="checkbox"
+                            className="h-4 w-4"
+                            defaultChecked
+                          />
+                          <span className="text-sm">Body</span>
+                        </div>
+                        <div className="flex gap-2">
+                          <button className="h-6 w-12 rounded bg-green-500"></button>
+                          <button className="h-6 w-12 rounded bg-red-500"></button>
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <div className="flex items-center space-x-2">
+                          <input
+                            type="checkbox"
+                            className="h-4 w-4"
+                            defaultChecked
+                          />
+                          <span className="text-sm">Borders</span>
+                        </div>
+                        <div className="flex gap-2">
+                          <button className="h-6 w-12 rounded border-2 border-green-500 bg-transparent"></button>
+                          <button className="h-6 w-12 rounded border-2 border-red-500 bg-transparent"></button>
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <div className="flex items-center space-x-2">
+                          <input
+                            type="checkbox"
+                            className="h-4 w-4"
+                            defaultChecked
+                          />
+                          <span className="text-sm">Wick</span>
+                        </div>
+                        <div className="flex gap-2">
+                          <button className="h-6 w-12 rounded bg-gray-400"></button>
+                          <button className="h-6 w-12 rounded bg-gray-600"></button>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="space-y-3">
+                      <h3 className="text-sm font-medium text-white">
+                        Data modification
+                      </h3>
+                      <div className="space-y-2">
+                        <h4 className="text-sm text-muted-foreground">
+                          Session
+                        </h4>
+                        <select className="w-full rounded border border-border bg-background px-3 py-1 text-sm">
+                          <option>Regular trading hours</option>
+                          <option>Extended trading hours</option>
+                        </select>
+                      </div>
+                      <div className="space-y-2">
+                        <h4 className="text-sm text-muted-foreground">
+                          Precision
+                        </h4>
+                        <select className="w-full rounded border border-border bg-background px-3 py-1 text-sm">
+                          <option>Default</option>
+                          <option>1 decimal</option>
+                          <option>2 decimals</option>
+                          <option>3 decimals</option>
+                        </select>
+                      </div>
+                      <div className="space-y-2">
+                        <h4 className="text-sm text-muted-foreground">
+                          Timezone
+                        </h4>
+                        <select className="w-full rounded border border-border bg-background px-3 py-1 text-sm">
+                          <option>UTC</option>
+                          <option>EST</option>
+                          <option>PST</option>
+                          <option>GMT</option>
+                          <option>IST</option>
+                        </select>
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {selectedSettingsCategory === "Status line" && (
+                  <div className="space-y-3">
+                    <h3 className="text-sm font-medium text-white">
+                      Status line
+                    </h3>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        className="h-4 w-4"
+                        defaultChecked
+                      />
+                      <span className="text-sm">Show symbol name</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        className="h-4 w-4"
+                        defaultChecked
+                      />
+                      <span className="text-sm">Show OHLC values</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        className="h-4 w-4"
+                        defaultChecked
+                      />
+                      <span className="text-sm">Show change and change %</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <input type="checkbox" className="h-4 w-4" />
+                      <span className="text-sm">Show volume</span>
+                    </div>
                   </div>
-                </div>
-                <div className="space-y-2">
-                  <h3 className="text-sm font-medium">Language</h3>
-                  <select className="w-full rounded border border-border bg-background px-3 py-1 text-sm">
-                    <option>English</option>
-                    <option>Spanish</option>
-                    <option>French</option>
-                    <option>German</option>
-                  </select>
-                </div>
-                <div className="space-y-2">
-                  <h3 className="text-sm font-medium">Time Zone</h3>
-                  <select className="w-full rounded border border-border bg-background px-3 py-1 text-sm">
-                    <option>UTC</option>
-                    <option>EST</option>
-                    <option>PST</option>
-                    <option>GMT</option>
-                  </select>
+                )}
+
+                {selectedSettingsCategory === "Scales and lines" && (
+                  <div className="space-y-3">
+                    <h3 className="text-sm font-medium text-white">
+                      Price scale
+                    </h3>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        className="h-4 w-4"
+                        defaultChecked
+                      />
+                      <span className="text-sm">Show price scale</span>
+                    </div>
+                    <div className="space-y-2">
+                      <h4 className="text-sm text-muted-foreground">
+                        Scale position
+                      </h4>
+                      <select className="w-full rounded border border-border bg-background px-3 py-1 text-sm">
+                        <option>Right</option>
+                        <option>Left</option>
+                        <option>Both</option>
+                      </select>
+                    </div>
+                    <h3 className="text-sm font-medium text-white">
+                      Grid lines
+                    </h3>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        className="h-4 w-4"
+                        defaultChecked
+                      />
+                      <span className="text-sm">Horizontal grid lines</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        className="h-4 w-4"
+                        defaultChecked
+                      />
+                      <span className="text-sm">Vertical grid lines</span>
+                    </div>
+                  </div>
+                )}
+
+                {selectedSettingsCategory === "Canvas" && (
+                  <div className="space-y-3">
+                    <h3 className="text-sm font-medium text-white">
+                      Background
+                    </h3>
+                    <div className="space-y-2">
+                      <h4 className="text-sm text-muted-foreground">
+                        Background color
+                      </h4>
+                      <button className="h-8 w-16 rounded border border-border bg-black"></button>
+                    </div>
+                    <div className="space-y-2">
+                      <h4 className="text-sm text-muted-foreground">
+                        Grid color
+                      </h4>
+                      <button className="h-8 w-16 rounded border border-border bg-gray-800"></button>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <input type="checkbox" className="h-4 w-4" />
+                      <span className="text-sm">Show watermark</span>
+                    </div>
+                  </div>
+                )}
+
+                {selectedSettingsCategory === "Trading" && (
+                  <div className="space-y-3">
+                    <h3 className="text-sm font-medium text-white">
+                      Order execution
+                    </h3>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        className="h-4 w-4"
+                        defaultChecked
+                      />
+                      <span className="text-sm">Show positions on chart</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        className="h-4 w-4"
+                        defaultChecked
+                      />
+                      <span className="text-sm">Show orders on chart</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <input type="checkbox" className="h-4 w-4" />
+                      <span className="text-sm">Show executions on chart</span>
+                    </div>
+                    <div className="space-y-2">
+                      <h4 className="text-sm text-muted-foreground">
+                        Default quantity
+                      </h4>
+                      <input
+                        type="number"
+                        className="w-full rounded border border-border bg-background px-3 py-1 text-sm"
+                        defaultValue="100"
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {selectedSettingsCategory === "Alerts" && (
+                  <div className="space-y-3">
+                    <h3 className="text-sm font-medium text-white">
+                      Alert settings
+                    </h3>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        className="h-4 w-4"
+                        defaultChecked
+                      />
+                      <span className="text-sm">Show alerts on chart</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        className="h-4 w-4"
+                        defaultChecked
+                      />
+                      <span className="text-sm">Play sound on alert</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <input type="checkbox" className="h-4 w-4" />
+                      <span className="text-sm">Show popup on alert</span>
+                    </div>
+                    <div className="space-y-2">
+                      <h4 className="text-sm text-muted-foreground">
+                        Alert frequency
+                      </h4>
+                      <select className="w-full rounded border border-border bg-background px-3 py-1 text-sm">
+                        <option>Once per bar</option>
+                        <option>Once per bar close</option>
+                        <option>All</option>
+                      </select>
+                    </div>
+                  </div>
+                )}
+
+                {selectedSettingsCategory === "Events" && (
+                  <div className="space-y-3">
+                    <h3 className="text-sm font-medium text-white">
+                      Economic events
+                    </h3>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        className="h-4 w-4"
+                        defaultChecked
+                      />
+                      <span className="text-sm">Show earnings</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        className="h-4 w-4"
+                        defaultChecked
+                      />
+                      <span className="text-sm">Show dividends</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <input type="checkbox" className="h-4 w-4" />
+                      <span className="text-sm">Show splits</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <input type="checkbox" className="h-4 w-4" />
+                      <span className="text-sm">Show economic releases</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="absolute bottom-4 left-0 right-0 flex items-center justify-between border-t border-border bg-background px-4 pt-4">
+                <button className="flex items-center gap-2 rounded border border-border px-3 py-1 text-sm hover:bg-muted">
+                  <span>Template</span>
+                  <svg
+                    className="h-4 w-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </button>
+                <div className="flex gap-2">
+                  <button className="rounded border border-border px-4 py-1 text-sm hover:bg-muted">
+                    Cancel
+                  </button>
+                  <button className="rounded bg-blue-600 px-4 py-1 text-sm text-white hover:bg-blue-700">
+                    Ok
+                  </button>
                 </div>
               </div>
             </div>

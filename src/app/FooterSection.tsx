@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/member-delimiter-style */
 import Image from "next/image";
 import Link from "next/link";
-import { MdOutlineWhatsapp, MdOutlineAttachEmail } from "react-icons/md";
-import { LiaTelegram } from "react-icons/lia";
-import { IoCallOutline } from "react-icons/io5";
+import { MdOutlineAttachEmail } from "react-icons/md";
 import { HiOutlineTicket } from "react-icons/hi2";
 
 import CheckIcon from "@/utils/icons/CheckIcon";
@@ -56,9 +54,6 @@ const menuItems = [
   {
     title: "Support",
     items: [
-      { text: "WhatsApp", icon: MdOutlineWhatsapp },
-      { text: "Telegram", icon: LiaTelegram },
-      { text: "24/7 Call Support", icon: IoCallOutline },
       { text: "Email Us", icon: MdOutlineAttachEmail },
       { text: "Raise a Ticket", icon: HiOutlineTicket },
     ],
